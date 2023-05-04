@@ -23,4 +23,6 @@ Jamroot
 libs/
 build/
 bin/
+cmake-build-debug/
+.idea/
 *bin/*
