@@ -100,6 +100,8 @@ public:
 		return tnode != other.tnode || vnode != other.vnode;
 	}
 
+    trie_iterator& operator=(const trie_iterator& other) = default;
+
 	void go_up_forward() {
 		typename node_children_type::iterator it;
 		tnode = tnode->parent;
@@ -341,7 +343,7 @@ public:
 	{
 		return tnode != other.tnode;
 	}
-
+    trie_iterator& operator=(const trie_iterator& other) = default;
 	void go_up_forward() {
 		typename node_children_type::iterator it;
 		tnode = tnode->parent;
@@ -532,6 +534,7 @@ public:
 	{
 		return tnode != other.tnode;
 	}
+    trie_iterator& operator=(const trie_iterator& other) = default;
 
 	void go_up_forward() {
 		typename node_children_type::iterator it;

@@ -14,6 +14,8 @@ public:
 	{
 	}
 
+    constexpr mytype(const mytype&) = default;
+
 	mytype& operator=(const mytype& x)
 	{
 		value = x.value;

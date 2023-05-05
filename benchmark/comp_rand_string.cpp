@@ -83,18 +83,18 @@ int main()
 
 	std::map<std::string, int> m;
 	boost::tries::trie_map<char, int> tm;
-	performance_profile(100, insert_into_map(), vs, m);
-	performance_profile(100, insert_into_tmap(), vs, tm);
-	performance_profile(100, find_from_map(), vs, m);
-	performance_profile(100, find_from_tmap(), vs, tm);
-	performance_profile(100, count_from_map(), vs, m);
-	performance_profile(100, count_from_tmap(), vs, tm);
-	performance_profile(100, count_prefix_from_map(), vs[0], m);
-	performance_profile(100, count_prefix_from_tmap(), vs[0], tm);
+	performance_profile(1000, insert_into_map(), vs, m);
+	performance_profile(1000, insert_into_tmap(), vs, tm);
+	performance_profile(100000, find_from_map(), vs, m);
+	performance_profile(100000, find_from_tmap(), vs, tm);
+	performance_profile(1000, count_from_map(), vs, m);
+	performance_profile(1000, count_from_tmap(), vs, tm);
+	performance_profile(1000, count_prefix_from_map(), vs[0], m);
+	performance_profile(1000, count_prefix_from_tmap(), vs[0], tm);
 	performance_profile(1, handle_prefixes(), count_prefix_from_map(), vs, m);
 	performance_profile(1, handle_prefixes(), count_prefix_from_tmap(), vs, tm);
-	performance_profile(100, iteration(), m);
-	performance_profile(100, iteration(), tm);
+	performance_profile(1000, iteration(), m);
+	performance_profile(1000, iteration(), tm);
 
 	return 0;
 }
