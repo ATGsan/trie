@@ -107,7 +107,7 @@ private:
 	}*/
 
 	void copy_tree(node_ptr self_root, node_ptr other_root) {
-		for (typename node_type::children_iter i = other_root->children.begin() ; i != other_root->children.end() ; ++i) {
+		for (auto i = other_root->children.begin() ; i != other_root->children.end() ; ++i) {
 			node_ptr c = &(*i);
 			node_ptr new_node = create_trie_node(c->key);
 			if (new_node != NULL)
