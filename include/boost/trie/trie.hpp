@@ -106,6 +106,26 @@ private:
 		return static_cast<value_node_ptr>(node->value_list_tail);
 	}*/
 
+	void copy_tree(node_ptr self_root, node_ptr other_root) {
+		for (auto i = other_root->children.begin() ; i != other_root->children.end() ; ++i) {
+			node_ptr c = &(*i);
+			node_ptr new_node = create_trie_node(c->key);
+			if (new_node != NULL)
+				node_count++;
+			if (multi_value_node)
+				copy_values(new_node, c, value_allocator);
+			else
+				copy_values(new_node, c);
+			new_node->parent = self_root;
+			self_root->children.insert(*new_node);
+			copy_tree(new_node, c);
+		}
+		if (multi_value_node)
+			copy_values(self_root, other_root, value_allocator);
+		else
+			copy_values(self_root, other_root);
+	}
+
 	// copy the whole trie tree
 	void copy_tree(node_ptr other_root)
 	{
@@ -113,46 +133,8 @@ private:
 			return;
 
 		clear();
- 		// because of the pred_node and next_node fields, copy() should implement by inserting one by one
-		// but inserting one by one need key, so it is hard to do that
+		copy_tree(&root, other_root);
 
-		std::stack<node_ptr> other_node_stk, self_node_stk;
-		std::stack<typename node_type::children_iter> ci_stk;
-		other_node_stk.push(other_root);
-		self_node_stk.push(&root);
-		ci_stk.push(other_root->children.begin());
-		for (; !other_node_stk.empty(); )
-		{
-			node_ptr other_cur = other_node_stk.top();
-			node_ptr self_cur = self_node_stk.top();
-			if (ci_stk.top() == other_cur->children.end())
-			{
-				other_node_stk.pop();
-				ci_stk.pop();
-				self_node_stk.pop();
-			} else {
-				node_ptr c = &(*ci_stk.top());
-				// create new node
-				node_ptr new_node = create_trie_node(c->key);
-				if (new_node != NULL)
-					node_count++;
-				if (multi_value_node)
-					copy_values(new_node, c, value_allocator);
-				else
-					copy_values(new_node, c);
-				new_node->parent = self_cur;
-				self_cur->children.insert(*new_node);
-				// to next node
-				++ci_stk.top();
-				other_node_stk.push(c);
-				ci_stk.push(c->children.begin());
-				self_node_stk.push(new_node);
-			}
-		}
-		if (multi_value_node)
-			copy_values(&root, other_root, value_allocator);
-		else
-			copy_values(&root, other_root);
 	}
 
 	node_ptr next_node_with_value(node_ptr tnode)
@@ -762,7 +744,6 @@ public:
 
 	void swap(trie_type& t)
 	{
-		// is it OK?
 		std::swap(root, t.root);
 		std::swap(t.node_count, node_count);
 	}

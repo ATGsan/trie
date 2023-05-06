@@ -14,6 +14,8 @@ public:
 	{
 	}
 
+    constexpr mytype(const mytype&) = default;
+
 	mytype& operator=(const mytype& x)
 	{
 		value = x.value;
@@ -270,4 +272,5 @@ int main() {
 	clear();
 	erase_iterator();
 	erase_key();
+	return boost::report_errors();
 }
