@@ -107,21 +107,19 @@ private:
 	}*/
 
 	void copy_tree(node_ptr self_root, node_ptr other_root) {
-		if (!other_root) return;
-
-        for (typename node_type::children_iter i = other_root->children.begin() ; i != other_root->children.end() ; ++i) {
-            node_ptr c = &(*i);
-            node_ptr new_node = create_trie_node(c->key);
-            if (new_node != NULL)
-                node_count++;
-            if (multi_value_node)
-                copy_values(new_node, c, value_allocator);
-            else
-                copy_values(new_node, c);
-            new_node->parent = self_root;
-            self_root->children.insert(*new_node);
-            copy_tree(new_node, c);
-        }
+		for (typename node_type::children_iter i = other_root->children.begin() ; i != other_root->children.end() ; ++i) {
+			node_ptr c = &(*i);
+			node_ptr new_node = create_trie_node(c->key);
+			if (new_node != NULL)
+				node_count++;
+			if (multi_value_node)
+				copy_values(new_node, c, value_allocator);
+			else
+				copy_values(new_node, c);
+			new_node->parent = self_root;
+			self_root->children.insert(*new_node);
+			copy_tree(new_node, c);
+		}
 		if (multi_value_node)
 			copy_values(self_root, other_root, value_allocator);
 		else
